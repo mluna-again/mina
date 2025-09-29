@@ -3,9 +3,11 @@ package main
 import "github.com/charmbracelet/lipgloss"
 
 type theme struct {
-	title        lipgloss.Style
-	prompt       lipgloss.Style
-	promptCursor lipgloss.Style
+	title            lipgloss.Style
+	prompt           lipgloss.Style
+	promptCursor     lipgloss.Style
+	listItem         lipgloss.Style
+	selectedListItem lipgloss.Style
 }
 
 // Kanagawa Dragon
@@ -21,9 +23,19 @@ func getTheme() theme {
 		Foreground(lipgloss.Color("#181616")).
 		Background(lipgloss.Color("#c4746e"))
 
+	li := lipgloss.NewStyle().
+		Foreground(lipgloss.Color("#c5c9c5")).
+		Background(lipgloss.Color("#1d1c19"))
+
+	sli := lipgloss.NewStyle().
+		Foreground(lipgloss.Color("#c5c9c5")).
+		Background(lipgloss.Color("#c4746e"))
+
 	return theme{
-		prompt:       p,
-		promptCursor: pC,
-		title:        t,
+		prompt:           p,
+		promptCursor:     pC,
+		title:            t,
+		listItem:         li,
+		selectedListItem: sli,
 	}
 }

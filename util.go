@@ -5,6 +5,7 @@ import (
 	"os"
 	"strings"
 
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
 
@@ -19,4 +20,13 @@ func loadInput() ([]string, error) {
 	}
 
 	return strings.Split(string(lines), "\n"), nil
+}
+
+func isFilterEvent(msg tea.Msg) bool {
+	t, ok := msg.(tea.KeyMsg)
+	if !ok {
+		return false
+	}
+
+	return t.String() != "ctrl+n" && t.String() != "ctrl+p"
 }

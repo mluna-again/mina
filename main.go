@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/charmbracelet/bubbles/key"
+	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
@@ -24,6 +26,7 @@ type model struct {
 	width   int
 	height  int
 	tinput  textinput.Model
+	list    list.Model
 	title   string
 	content []string
 }
@@ -50,12 +53,31 @@ func newMina() model {
 		}
 	}
 
+	items := []list.Item{}
+	for _, line := range content {
+		if line == "" {
+			continue
+		}
+		items = append(items, item{text: line, style: theme.listItem, selectedStyle: theme.selectedListItem})
+	}
+
+	l := list.New(items, itemDelegate{}, 0, 0)
+	l.SetFilteringEnabled(false)
+	l.SetShowFilter(false)
+	l.SetShowHelp(false)
+	l.SetShowPagination(false)
+	l.SetShowStatusBar(false)
+	l.SetShowTitle(false)
+	l.KeyMap.CursorDown = key.NewBinding(key.WithKeys("ctrl+n"))
+	l.KeyMap.CursorUp = key.NewBinding(key.WithKeys("ctrl+p"))
+
 	return model{
 		tinput:  t,
 		title:   title,
 		theme:   theme,
 		mode:    mode,
 		content: content,
+		list:    l,
 	}
 }
 
@@ -64,25 +86,37 @@ func (m model) Init() tea.Cmd {
 }
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
-	switch msg := msg.(type) {
-	case tea.WindowSizeMsg:
-		m.height = msg.Height
-		m.width = msg.Width
-		m.tinput.Width = m.calculatePromptWidth()
-		return m, tea.ClearScreen
-
-	case tea.KeyMsg:
-		switch msg.String() {
-		case "ctrl+c", "q":
-			return m, tea.Quit
-		}
-	}
-
 	var cmds []tea.Cmd
 	var cmd tea.Cmd
 
 	m.tinput, cmd = m.tinput.Update(msg)
 	cmds = append(cmds, cmd)
+
+	m.list, cmd = m.list.Update(msg)
+	cmds = append(cmds, cmd)
+
+	switch msg := msg.(type) {
+	case tea.WindowSizeMsg:
+		m.height = msg.Height
+		m.width = msg.Width
+		m.tinput.Width = m.calculatePromptWidth()
+		m.list.SetHeight(m.height - 3) // header
+		m.list.SetWidth(m.width)
+		return m, tea.ClearScreen
+
+	case tea.KeyMsg:
+		// man this makes my brain hurt
+		// why do i need this? i *THINK* its because if i set the filter on each keystroke
+		// it resets the list position to 0. so if the keys are ctrl+n or ctrl+p i dont update the
+		// filter to avoid it resetting the list
+		if isFilterEvent(msg) {
+			m.list.SetFilterText(m.tinput.Value())
+		}
+		switch msg.String() {
+		case "ctrl+c", "q":
+			return m, tea.Quit
+		}
+	}
 
 	return m, tea.Batch(cmds...)
 }
@@ -92,7 +126,7 @@ func (m model) View() string {
 		return m.header()
 	}
 
-	return m.header()
+	return m.header() + m.list.View()
 }
 
 func main() {
