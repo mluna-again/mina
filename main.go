@@ -119,7 +119,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "enter":
 			switch m.mode {
 			case FZF_MODE:
-				response = m.content[m.list.GlobalIndex()]
+				if len(m.content) > 1 {
+					response = m.content[m.list.GlobalIndex()]
+				}
 			case PROMPT_MODE:
 				response = m.tinput.Value()
 			default:
