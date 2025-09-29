@@ -133,7 +133,9 @@ func (m model) View() string {
 		return m.header()
 	}
 
-	return m.header() + m.theme.list.Render(m.list.View())
+	list := m.theme.list.Render(m.list.View())
+	list = lipgloss.Place(m.list.Width(), m.list.Height(), lipgloss.Center,lipgloss.Center, list, lipgloss.WithWhitespaceBackground(m.theme.list.GetBackground()))
+	return m.header() + list
 }
 
 func main() {
