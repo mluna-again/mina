@@ -139,7 +139,7 @@ func (m model) View() string {
 func main() {
 	flag.StringVar(&icon, "icon", "", "prompt icon")
 	flag.StringVar(&title, "title", "Mina", "prompt title")
-	flag.StringVar(&mode, "mode", "prompt", "modes available: [prompt, fzf]")
+	flag.StringVar(&mode, "mode", "fzf", "modes available: [prompt, fzf]")
 	flag.StringVar(&separator, "sep", " ", "separator used with -nth")
 	flag.StringVar(&displayColumns, "nth", "", "display specific columns. eg: -nth 1 displays only the second column, -nth 0,3 displays 1st, 2nd and 3rd column.")
 	flag.Parse()
