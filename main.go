@@ -11,15 +11,21 @@ import (
 	"github.com/muesli/termenv"
 )
 
+const PROMPT_MODE = "prompt"
+const FZF_MODE = "fzf"
+
 var icon string
 var title string
+var mode string
 
 type model struct {
-	theme  theme
-	width  int
-	height int
-	tinput textinput.Model
-	title  string
+	theme   theme
+	mode    string
+	width   int
+	height  int
+	tinput  textinput.Model
+	title   string
+	content []string
 }
 
 func newMina() model {
@@ -35,10 +41,21 @@ func newMina() model {
 	t.Cursor.Style = theme.promptCursor
 	t.Cursor.TextStyle = theme.promptCursor
 
+	content := []string{}
+	if mode == FZF_MODE {
+		var err error
+		content, err = loadInput()
+		if err != nil {
+			panic(err)
+		}
+	}
+
 	return model{
-		tinput: t,
-		title:  title,
-		theme:  theme,
+		tinput:  t,
+		title:   title,
+		theme:   theme,
+		mode:    mode,
+		content: content,
 	}
 }
 
@@ -71,12 +88,17 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
+	if m.mode == PROMPT_MODE {
+		return m.header()
+	}
+
 	return m.header()
 }
 
 func main() {
 	flag.StringVar(&icon, "icon", "", "prompt icon")
 	flag.StringVar(&title, "title", "Mina", "prompt title")
+	flag.StringVar(&mode, "mode", "prompt", "modes available: [prompt, fzf]")
 	flag.Parse()
 
 	lipgloss.SetColorProfile(termenv.TrueColor)
