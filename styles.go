@@ -6,6 +6,8 @@ type theme struct {
 	title            lipgloss.Style
 	prompt           lipgloss.Style
 	promptCursor     lipgloss.Style
+	placeholder      lipgloss.Style
+	noCursor         lipgloss.Style
 	list             lipgloss.Style
 	listItem         lipgloss.Style
 	selectedListItem lipgloss.Style
@@ -13,9 +15,16 @@ type theme struct {
 
 // Kanagawa Dragon
 func getTheme() theme {
+	hidden := lipgloss.NewStyle().Background(lipgloss.Color("#282727")).Foreground(lipgloss.Color("#282727"))
+
 	p := lipgloss.NewStyle().
 		Background(lipgloss.Color("#282727")).
 		Foreground(lipgloss.Color("#c5c9c5"))
+
+	ph := lipgloss.NewStyle().
+		Background(lipgloss.Color("#282727")).
+		Foreground(lipgloss.Color("#a6a69c"))
+
 	pC := lipgloss.NewStyle().
 		Foreground(lipgloss.Color("#c5c9c5")).
 		Background(lipgloss.Color("#c5c9c5"))
@@ -42,6 +51,8 @@ func getTheme() theme {
 	return theme{
 		prompt:           p,
 		promptCursor:     pC,
+		noCursor:         hidden,
+		placeholder:      ph,
 		title:            t,
 		list:             l,
 		listItem:         li,

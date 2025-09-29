@@ -10,6 +10,10 @@ import (
 )
 
 func (m model) calculatePromptWidth() int {
+	if m.mode == CONFIRM_MODE {
+		return 3
+	}
+
 	return m.width - lipgloss.Width(m.tinput.Prompt) - 3 // padding + cursor
 }
 

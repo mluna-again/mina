@@ -14,6 +14,7 @@ import (
 )
 
 const PROMPT_MODE = "prompt"
+const CONFIRM_MODE = "confirm"
 const FZF_MODE = "fzf"
 
 var response string
@@ -41,13 +42,23 @@ func newMina() model {
 
 	t := textinput.New()
 	t.Focus()
-	t.Prompt = fmt.Sprintf("%s ", icon)
 	t.Width = 80
 	t.TextStyle = theme.prompt
 	t.PromptStyle = theme.prompt
+	t.PlaceholderStyle = theme.placeholder
 	// This disables the blinking that i *didnt* enable, btw
+	t.Cursor.Blur()
 	t.Cursor.Style = theme.promptCursor
 	t.Cursor.TextStyle = theme.promptCursor
+	if mode != CONFIRM_MODE {
+		t.Prompt = fmt.Sprintf("%s ", icon)
+	} else {
+		t.Prompt = " "
+		t.Cursor.Style = theme.noCursor
+		t.Cursor.TextStyle = theme.noCursor
+		t.CharLimit = 3
+		t.Width = 3
+	}
 
 	content := []string{}
 	if mode == FZF_MODE {
@@ -124,6 +135,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				}
 			case PROMPT_MODE:
 				response = m.tinput.Value()
+			case CONFIRM_MODE:
+				response = m.tinput.Value()
 			default:
 				panic("unknown mode")
 			}
@@ -138,17 +151,20 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
-	if m.mode == PROMPT_MODE {
+	switch m.mode {
+	case PROMPT_MODE:
 		return m.headerView()
+	case CONFIRM_MODE:
+		return m.confirmView()
+	default:
+		return m.headerView() + "\n" + m.listView()
 	}
-
-	return m.headerView() + "\n" + m.listView()
 }
 
 func main() {
 	flag.StringVar(&icon, "icon", "", "prompt icon")
 	flag.StringVar(&title, "title", "Mina", "prompt title")
-	flag.StringVar(&mode, "mode", "fzf", "modes available: [prompt, fzf]")
+	flag.StringVar(&mode, "mode", "fzf", "modes available: [prompt, fzf, confirm]")
 	flag.StringVar(&separator, "sep", " ", "separator used with -nth")
 	flag.StringVar(&displayColumns, "nth", "", "display specific columns. eg: -nth 1 displays only the second column, -nth 0,3 displays 1st, 2nd and 3rd column.")
 	flag.Parse()
