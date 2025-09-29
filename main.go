@@ -18,9 +18,12 @@ const FZF_MODE = "fzf"
 
 var response string
 
+// FLAGS
 var icon string
 var title string
 var mode string
+var separator string
+var displayColumns string
 
 type model struct {
 	theme   theme
@@ -137,6 +140,8 @@ func main() {
 	flag.StringVar(&icon, "icon", "", "prompt icon")
 	flag.StringVar(&title, "title", "Mina", "prompt title")
 	flag.StringVar(&mode, "mode", "prompt", "modes available: [prompt, fzf]")
+	flag.StringVar(&separator, "sep", " ", "separator used with -nth")
+	flag.StringVar(&displayColumns, "nth", "", "display specific columns. eg: -nth 1 displays only the second column, -nth 0,3 displays 1st, 2nd and 3rd column.")
 	flag.Parse()
 
 	lipgloss.SetColorProfile(termenv.TrueColor)
