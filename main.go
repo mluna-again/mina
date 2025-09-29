@@ -16,6 +16,8 @@ import (
 const PROMPT_MODE = "prompt"
 const FZF_MODE = "fzf"
 
+var response string
+
 var icon string
 var title string
 var mode string
@@ -55,9 +57,6 @@ func newMina() model {
 
 	items := []list.Item{}
 	for _, line := range content {
-		if line == "" {
-			continue
-		}
 		items = append(items, item{text: line, style: theme.listItem, selectedStyle: theme.selectedListItem})
 	}
 
@@ -108,11 +107,16 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		// man this makes my brain hurt
 		// why do i need this? i *THINK* its because if i set the filter on each keystroke
 		// it resets the list position to 0. so if the keys are ctrl+n or ctrl+p i dont update the
-		// filter to avoid it resetting the list
+		// filter to avoid it resetting the list.
+		// also, i dont update the filter on enter because if i do that the index will reset before i set the final response
 		if isFilterEvent(msg) {
 			m.list.SetFilterText(m.tinput.Value())
 		}
 		switch msg.String() {
+		case "enter":
+			response = m.content[m.list.GlobalIndex()]
+			return m, tea.Quit
+
 		case "ctrl+c", "q":
 			return m, tea.Quit
 		}
@@ -140,5 +144,9 @@ func main() {
 	if _, err := p.Run(); err != nil {
 		fmt.Printf("Alas, there's been an error: %v", err)
 		os.Exit(1)
+	}
+
+	if response != "" {
+		fmt.Println(response)
 	}
 }

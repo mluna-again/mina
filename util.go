@@ -19,7 +19,16 @@ func loadInput() ([]string, error) {
 		return []string{}, err
 	}
 
-	return strings.Split(string(lines), "\n"), nil
+	filtered := []string{}
+	for _, line := range strings.Split(string(lines), "\n") {
+		if line == "" {
+			continue
+		}
+
+		filtered = append(filtered, line)
+	}
+
+	return filtered, nil
 }
 
 func isFilterEvent(msg tea.Msg) bool {
@@ -28,5 +37,7 @@ func isFilterEvent(msg tea.Msg) bool {
 		return false
 	}
 
-	return t.String() != "ctrl+n" && t.String() != "ctrl+p"
+	key := t.String()
+
+	return key != "ctrl+n" && key != "ctrl+p" && key != "enter"
 }
