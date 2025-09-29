@@ -130,7 +130,7 @@ func (m model) View() string {
 		return m.header()
 	}
 
-	return m.header() + m.list.View()
+	return m.header() + m.theme.list.Render(m.list.View())
 }
 
 func main() {
