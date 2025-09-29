@@ -130,12 +130,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m model) View() string {
 	if m.mode == PROMPT_MODE {
-		return m.header()
+		return m.headerView()
 	}
 
-	list := m.theme.list.Render(m.list.View())
-	list = lipgloss.Place(m.list.Width(), m.list.Height(), lipgloss.Center,lipgloss.Center, list, lipgloss.WithWhitespaceBackground(m.theme.list.GetBackground()))
-	return m.header() + list
+	return m.headerView() + "\n" + m.listView()
 }
 
 func main() {
