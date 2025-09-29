@@ -117,7 +117,14 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 		switch msg.String() {
 		case "enter":
-			response = m.content[m.list.GlobalIndex()]
+			switch m.mode {
+			case FZF_MODE:
+				response = m.content[m.list.GlobalIndex()]
+			case PROMPT_MODE:
+				response = m.tinput.Value()
+			default:
+				panic("unknown mode")
+			}
 			return m, tea.Quit
 
 		case "ctrl+c", "q":
