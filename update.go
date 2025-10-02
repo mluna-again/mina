@@ -115,6 +115,16 @@ func (m model) updateConfirm(msg tea.Msg) (model, tea.Cmd) {
 
 func (m model) updateMenu(msg tea.Msg) (model, tea.Cmd) {
 	switch msg := msg.(type) {
+	case tea.WindowSizeMsg:
+		if !m.ignoreHeight {
+			m.height = msg.Height
+		}
+		if !m.ignoreWidth {
+			m.width = msg.Width
+			m.tinput.Width = m.calculatePromptWidth()
+		}
+		return m, tea.ClearScreen
+
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "ctrl+c", "q":

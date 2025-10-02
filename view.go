@@ -1,7 +1,9 @@
 package main
 
 import (
+	"cmp"
 	"fmt"
+	"slices"
 	"unicode/utf8"
 
 	"github.com/charmbracelet/lipgloss"
@@ -60,5 +62,37 @@ func (m model) confirmView() string {
 }
 
 func (m model) menuView() string {
-	return "hi"
+	bg := m.theme.bg.GetBackground()
+
+	fill := lipgloss.PlaceHorizontal(m.width, lipgloss.Center, "", lipgloss.WithWhitespaceBackground(bg))
+
+	titleStr := m.theme.title.Render(fmt.Sprintf(" %s ", m.title))
+	title := lipgloss.PlaceHorizontal(m.width, lipgloss.Center, titleStr, lipgloss.WithWhitespaceBackground(bg))
+
+	items := []MappedKey{}
+	for line, key := range m.menuKeys {
+		keyStr := m.theme.bg.Render(fmt.Sprintf(" %s", line))
+		actionStr := m.theme.bg.Render(fmt.Sprintf("(%s) ", key.action))
+		keyPadded := lipgloss.PlaceHorizontal(m.width-lipgloss.Width(actionStr), lipgloss.Left, keyStr, lipgloss.WithWhitespaceBackground(bg))
+
+		item := lipgloss.JoinHorizontal(lipgloss.Left, keyPadded, actionStr)
+		items = append(items, MappedKey{str: item, index: key.index})
+	}
+	slices.SortFunc[[]MappedKey](items, func(prev MappedKey, next MappedKey) int {
+		return cmp.Compare[int](prev.index, next.index)
+	})
+
+	itemsStr := []string{}
+	for _, item := range items {
+		itemsStr = append(itemsStr, item.str)
+	}
+
+	if len(items) == 0 {
+		return title
+	}
+
+	itemsJoined := lipgloss.JoinVertical(lipgloss.Top, itemsStr...)
+	content := lipgloss.JoinVertical(lipgloss.Top, title, fill, itemsJoined, fill)
+
+	return content
 }

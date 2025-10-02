@@ -28,6 +28,16 @@ var displayColumns string
 var height int
 var width int
 
+type Key struct {
+	action string
+	index  int
+}
+
+type MappedKey struct {
+	str   string
+	index int
+}
+
 type model struct {
 	theme        theme
 	mode         string
@@ -39,6 +49,7 @@ type model struct {
 	list         list.Model
 	title        string
 	content      []string
+	menuKeys     map[string]Key
 }
 
 func newMina() model {

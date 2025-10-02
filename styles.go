@@ -4,6 +4,7 @@ import "github.com/charmbracelet/lipgloss"
 
 type theme struct {
 	title            lipgloss.Style
+	bg               lipgloss.Style
 	prompt           lipgloss.Style
 	promptCursor     lipgloss.Style
 	placeholder      lipgloss.Style
@@ -49,6 +50,7 @@ func getTheme() theme {
 		Padding(0, 1)
 
 	return theme{
+		bg:               p,
 		prompt:           p,
 		promptCursor:     pC,
 		noCursor:         hidden,

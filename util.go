@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"io"
+	"log"
 	"os"
 	"strings"
 
@@ -44,4 +46,32 @@ func isFilterEvent(msg tea.Msg) bool {
 	key := t.String()
 
 	return key != "ctrl+n" && key != "ctrl+p" && key != "enter"
+}
+
+func getMenuItems(input []string) map[string]Key {
+	keys := map[string]Key{}
+	j := 1
+
+	for i, line := range input {
+		cmps := strings.Split(line, separator)
+		if len(cmps) < 0 || len(cmps) > 2 {
+			log.Fatalf("%s: bad argument, separator: %s\n", line, separator)
+		}
+
+		if len(cmps) == 1 {
+			keys[line] = Key{
+				action: fmt.Sprintf("%d", j),
+				index:  i,
+			}
+			j++
+			continue
+		}
+
+		keys[cmps[0]] = Key{
+			action: cmps[1],
+			index:  i,
+		}
+	}
+
+	return keys
 }

@@ -95,6 +95,13 @@ func newMenuModel() model {
 	ignoreH := height != 0
 	ignoreW := width != 0
 
+	content := []string{}
+	var err error
+	content, err = loadInput()
+	if err != nil {
+		panic(err)
+	}
+
 	return model{
 		title:        title,
 		theme:        theme,
@@ -103,6 +110,8 @@ func newMenuModel() model {
 		width:        width,
 		ignoreHeight: ignoreH,
 		ignoreWidth:  ignoreW,
+		content:      content,
+		menuKeys:     getMenuItems(content),
 	}
 }
 
