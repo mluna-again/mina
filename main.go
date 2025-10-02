@@ -99,55 +99,16 @@ func (m model) Init() tea.Cmd {
 }
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
-	var cmds []tea.Cmd
-	var cmd tea.Cmd
-
-	m.tinput, cmd = m.tinput.Update(msg)
-	cmds = append(cmds, cmd)
-
-	m.list, cmd = m.list.Update(msg)
-	cmds = append(cmds, cmd)
-
-	switch msg := msg.(type) {
-	case tea.WindowSizeMsg:
-		m.height = msg.Height
-		m.width = msg.Width
-		m.tinput.Width = m.calculatePromptWidth()
-		m.list.SetHeight(m.height - 3) // header
-		m.list.SetWidth(m.width)
-		return m, tea.ClearScreen
-
-	case tea.KeyMsg:
-		// man this makes my brain hurt
-		// why do i need this? i *THINK* its because if i set the filter on each keystroke
-		// it resets the list position to 0. so if the keys are ctrl+n or ctrl+p i dont update the
-		// filter to avoid it resetting the list.
-		// also, i dont update the filter on enter because if i do that the index will reset before i set the final response
-		if isFilterEvent(msg) {
-			m.list.SetFilterText(m.tinput.Value())
-		}
-		switch msg.String() {
-		case "enter":
-			switch m.mode {
-			case FZF_MODE:
-				if len(m.content) > 1 {
-					response = m.content[m.list.GlobalIndex()]
-				}
-			case PROMPT_MODE:
-				response = m.tinput.Value()
-			case CONFIRM_MODE:
-				response = m.tinput.Value()
-			default:
-				panic("unknown mode")
-			}
-			return m, tea.Quit
-
-		case "ctrl+c", "q":
-			return m, tea.Quit
-		}
+	switch m.mode {
+	case PROMPT_MODE:
+		return m.updatePrompt(msg)
+	case FZF_MODE:
+		return m.updateFzf(msg)
+	case CONFIRM_MODE:
+		return m.updateConfirm(msg)
+	default:
+		panic("unknown mode")
 	}
-
-	return m, tea.Batch(cmds...)
 }
 
 func (m model) View() string {
