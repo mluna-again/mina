@@ -62,6 +62,7 @@ func getMenuItems(input []string) map[string]Key {
 			keys[line] = Key{
 				action: fmt.Sprintf("%d", j),
 				index:  i,
+				text:   line,
 			}
 			j++
 			continue
@@ -70,6 +71,7 @@ func getMenuItems(input []string) map[string]Key {
 		keys[cmps[0]] = Key{
 			action: cmps[1],
 			index:  i,
+			text:   cmps[0],
 		}
 	}
 

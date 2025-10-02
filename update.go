@@ -126,7 +126,15 @@ func (m model) updateMenu(msg tea.Msg) (model, tea.Cmd) {
 		return m, tea.ClearScreen
 
 	case tea.KeyMsg:
-		switch msg.String() {
+		keyStroke := msg.String()
+		for _, key := range m.menuKeys {
+			if key.action == keyStroke {
+				response = key.text
+				return m, tea.Quit
+			}
+		}
+
+		switch keyStroke {
 		case "ctrl+c", "q":
 			return m, tea.Quit
 		}

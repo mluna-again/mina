@@ -30,6 +30,7 @@ var width int
 
 type Key struct {
 	action string
+	text   string
 	index  int
 }
 
