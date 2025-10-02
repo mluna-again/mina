@@ -16,6 +16,7 @@ import (
 const PROMPT_MODE = "prompt"
 const CONFIRM_MODE = "confirm"
 const FZF_MODE = "fzf"
+const MENU_MODE = "menu"
 
 var response string
 
@@ -119,6 +120,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		return m.updateFzf(msg)
 	case CONFIRM_MODE:
 		return m.updateConfirm(msg)
+	case MENU_MODE:
+		return m.updateMenu(msg)
 	default:
 		panic("unknown mode")
 	}
@@ -130,6 +133,8 @@ func (m model) View() string {
 		return m.headerView()
 	case CONFIRM_MODE:
 		return m.confirmView()
+	case MENU_MODE:
+		return m.menuView()
 	default:
 		return m.headerView() + "\n" + m.listView()
 	}
@@ -138,7 +143,7 @@ func (m model) View() string {
 func main() {
 	flag.StringVar(&icon, "icon", "", "prompt icon")
 	flag.StringVar(&title, "title", "Mina", "prompt title")
-	flag.StringVar(&mode, "mode", "fzf", "modes available: [prompt, fzf, confirm]")
+	flag.StringVar(&mode, "mode", "fzf", "modes available: [prompt, fzf, confirm, menu]")
 	flag.StringVar(&separator, "sep", " ", "separator used with -nth")
 	flag.StringVar(&displayColumns, "nth", "", "display specific columns. eg: -nth 1 displays only the second column, -nth 0,3 displays 1st, 2nd and 3rd column.")
 	flag.IntVar(&height, "height", 0, "height, if 0 or empty it takes the full screen")

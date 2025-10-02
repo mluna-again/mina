@@ -58,3 +58,7 @@ func (m model) confirmView() string {
 	content := lipgloss.JoinHorizontal(lipgloss.Left, msg, input)
 	return content
 }
+
+func (m model) menuView() string {
+	return "hi"
+}

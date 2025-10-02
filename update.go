@@ -112,3 +112,15 @@ func (m model) updateConfirm(msg tea.Msg) (model, tea.Cmd) {
 
 	return m, tea.Batch(cmds...)
 }
+
+func (m model) updateMenu(msg tea.Msg) (model, tea.Cmd) {
+	switch msg := msg.(type) {
+	case tea.KeyMsg:
+		switch msg.String() {
+		case "ctrl+c", "q":
+			return m, tea.Quit
+		}
+	}
+
+	return m, nil
+}
