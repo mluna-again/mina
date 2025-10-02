@@ -11,9 +11,13 @@ func (m model) updatePrompt(msg tea.Msg) (model, tea.Cmd) {
 
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
-		m.height = msg.Height
-		m.width = msg.Width
-		m.tinput.Width = m.calculatePromptWidth()
+		if !m.ignoreHeight {
+			m.height = msg.Height
+		}
+		if !m.ignoreWidth {
+			m.width = msg.Width
+			m.tinput.Width = m.calculatePromptWidth()
+		}
 		return m, tea.ClearScreen
 
 	case tea.KeyMsg:
@@ -42,11 +46,15 @@ func (m model) updateFzf(msg tea.Msg) (model, tea.Cmd) {
 
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
-		m.height = msg.Height
-		m.width = msg.Width
-		m.tinput.Width = m.calculatePromptWidth()
-		m.list.SetHeight(m.height - 3) // header
-		m.list.SetWidth(m.width)
+		if !m.ignoreHeight {
+			m.height = msg.Height
+			m.list.SetHeight(m.height - 3) // header
+		}
+		if !m.ignoreWidth {
+			m.width = msg.Width
+			m.list.SetWidth(m.width)
+			m.tinput.Width = m.calculatePromptWidth()
+		}
 		return m, tea.ClearScreen
 
 	case tea.KeyMsg:
@@ -82,9 +90,13 @@ func (m model) updateConfirm(msg tea.Msg) (model, tea.Cmd) {
 
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
-		m.height = msg.Height
-		m.width = msg.Width
-		m.tinput.Width = m.calculatePromptWidth()
+		if !m.ignoreHeight {
+			m.height = msg.Height
+		}
+		if !m.ignoreWidth {
+			m.width = msg.Width
+			m.tinput.Width = m.calculatePromptWidth()
+		}
 		return m, tea.ClearScreen
 
 	case tea.KeyMsg:

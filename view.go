@@ -17,7 +17,7 @@ func (m model) headerView() string {
 
 	fill := lipgloss.PlaceHorizontal(m.width, lipgloss.Center, "", lipgloss.WithWhitespaceBackground(bg))
 
-	return fmt.Sprintf("%s\n%s\n%s", title, input, fill)
+	return lipgloss.JoinVertical(lipgloss.Top, title, input, fill)
 }
 
 func (m model) listView() string {
@@ -28,6 +28,16 @@ func (m model) listView() string {
 }
 
 func (m model) confirmView() string {
+	// user set it
+	h := 3
+	if m.ignoreHeight {
+		h = m.height
+	}
+	w := m.width
+	if m.ignoreWidth {
+		w = m.width
+	}
+
 	input := m.tinput.Value()
 	if input == "" {
 		input = m.theme.placeholder.Render("N/y")
@@ -39,10 +49,12 @@ func (m model) confirmView() string {
 		input = m.theme.prompt.Render(input)
 	}
 
-	input = lipgloss.PlaceHorizontal(int(float64(m.width)*0.2), lipgloss.Center, input, lipgloss.WithWhitespaceBackground(m.tinput.PromptStyle.GetBackground()))
+	bg := m.tinput.PromptStyle.GetBackground()
+	input = lipgloss.Place(int(float64(m.width)*0.2), h, lipgloss.Center, lipgloss.Center, input, lipgloss.WithWhitespaceBackground(bg))
 
-	msg := lipgloss.PlaceHorizontal(m.width-lipgloss.Width(input), lipgloss.Center, m.title)
+	msg := lipgloss.Place(w-lipgloss.Width(input), h, lipgloss.Center, lipgloss.Center, m.title)
 	msg = m.theme.title.Render(msg)
 
-	return lipgloss.JoinHorizontal(lipgloss.Left, msg, input)
+	content := lipgloss.JoinHorizontal(lipgloss.Left, msg, input)
+	return content
 }

@@ -25,16 +25,20 @@ var title string
 var mode string
 var separator string
 var displayColumns string
+var height int
+var width int
 
 type model struct {
-	theme   theme
-	mode    string
-	width   int
-	height  int
-	tinput  textinput.Model
-	list    list.Model
-	title   string
-	content []string
+	theme        theme
+	mode         string
+	width        int
+	height       int
+	ignoreHeight bool
+	ignoreWidth  bool
+	tinput       textinput.Model
+	list         list.Model
+	title        string
+	content      []string
 }
 
 func newMina() model {
@@ -42,7 +46,6 @@ func newMina() model {
 
 	t := textinput.New()
 	t.Focus()
-	t.Width = 80
 	t.TextStyle = theme.prompt
 	t.PromptStyle = theme.prompt
 	t.PlaceholderStyle = theme.placeholder
@@ -50,6 +53,7 @@ func newMina() model {
 	t.Cursor.Blur()
 	t.Cursor.Style = theme.promptCursor
 	t.Cursor.TextStyle = theme.promptCursor
+	t.Width = width-lipgloss.Width(t.Prompt)-1
 	if mode != CONFIRM_MODE {
 		t.Prompt = fmt.Sprintf("%s ", icon)
 	} else {
@@ -83,14 +87,23 @@ func newMina() model {
 	l.SetShowTitle(false)
 	l.KeyMap.CursorDown = key.NewBinding(key.WithKeys("ctrl+n"))
 	l.KeyMap.CursorUp = key.NewBinding(key.WithKeys("ctrl+p"))
+	l.SetHeight(height)
+	l.SetWidth(width-theme.listItem.GetPaddingLeft()-theme.listItem.GetPaddingRight())
+
+	ignoreH := height != 0
+	ignoreW := width != 0
 
 	return model{
-		tinput:  t,
-		title:   title,
-		theme:   theme,
-		mode:    mode,
-		content: content,
-		list:    l,
+		tinput:       t,
+		title:        title,
+		theme:        theme,
+		mode:         mode,
+		content:      content,
+		list:         l,
+		height:       height,
+		width:        width,
+		ignoreHeight: ignoreH,
+		ignoreWidth:  ignoreW,
 	}
 }
 
@@ -128,6 +141,8 @@ func main() {
 	flag.StringVar(&mode, "mode", "fzf", "modes available: [prompt, fzf, confirm]")
 	flag.StringVar(&separator, "sep", " ", "separator used with -nth")
 	flag.StringVar(&displayColumns, "nth", "", "display specific columns. eg: -nth 1 displays only the second column, -nth 0,3 displays 1st, 2nd and 3rd column.")
+	flag.IntVar(&height, "height", 0, "height, if 0 or empty it takes the full screen")
+	flag.IntVar(&width, "width", 0, "width, if 0 or empty it takes the full screen")
 	flag.Parse()
 
 	lipgloss.SetColorProfile(termenv.TrueColor)
