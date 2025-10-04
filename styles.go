@@ -36,12 +36,12 @@ func getTheme() theme {
 
 	l := lipgloss.NewStyle().
 		Foreground(lipgloss.Color("#c5c9c5")).
-		Background(lipgloss.Color("#1d1c19")).
+		Background(lipgloss.Color("#12120f")).
 		Padding(0, 0)
 
 	li := lipgloss.NewStyle().
 		Foreground(lipgloss.Color("#c5c9c5")).
-		Background(lipgloss.Color("#1d1c19")).
+		Background(lipgloss.Color("#12120f")).
 		Padding(0, 1)
 
 	sli := lipgloss.NewStyle().
