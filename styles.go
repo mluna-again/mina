@@ -45,7 +45,7 @@ func getTheme() theme {
 		Padding(0, 1)
 
 	sli := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("#c5c9c5")).
+		Foreground(lipgloss.Color("#12120f")).
 		Background(lipgloss.Color("#c4746e")).
 		Padding(0, 1)
 
