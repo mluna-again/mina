@@ -27,6 +27,7 @@ var separator string
 var displayColumns string
 var height int
 var width int
+var onekey bool
 
 type Key struct {
 	action string
@@ -108,6 +109,7 @@ func main() {
 	flag.StringVar(&displayColumns, "nth", "", "display specific columns. eg: -nth 1 displays only the second column, -nth 0,3 displays 1st, 2nd and 3rd column.")
 	flag.IntVar(&height, "height", 0, "height, if 0 or empty it takes the full screen")
 	flag.IntVar(&width, "width", 0, "width, if 0 or empty it takes the full screen")
+	flag.BoolVar(&onekey, "onekey", false, "exit after 1 keystroke. useful in confirm mode")
 	flag.Parse()
 
 	lipgloss.SetColorProfile(termenv.TrueColor)

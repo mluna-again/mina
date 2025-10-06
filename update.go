@@ -108,6 +108,11 @@ func (m model) updateConfirm(msg tea.Msg) (model, tea.Cmd) {
 		case "ctrl+c", "q":
 			return m, tea.Quit
 		}
+
+		if onekey {
+			response = m.tinput.Value()
+			return m, tea.Quit
+		}
 	}
 
 	return m, tea.Batch(cmds...)
