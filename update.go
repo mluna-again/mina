@@ -68,7 +68,7 @@ func (m model) updateFzf(msg tea.Msg) (model, tea.Cmd) {
 		}
 		switch msg.String() {
 		case "enter":
-			if len(m.content) > 1 {
+			if len(m.list.VisibleItems()) > 1 {
 				response = m.content[m.list.GlobalIndex()]
 			}
 			return m, tea.Quit
