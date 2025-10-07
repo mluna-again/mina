@@ -136,5 +136,9 @@ func newInput(theme theme) textinput.Model {
 		t.Width = 3
 	}
 
+	if defaultValue != "" {
+		t.SetValue(defaultValue)
+	}
+
 	return t
 }

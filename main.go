@@ -28,6 +28,7 @@ var displayColumns string
 var height int
 var width int
 var onekey bool
+var defaultValue string
 
 type Key struct {
 	action string
@@ -110,6 +111,7 @@ func main() {
 	flag.IntVar(&height, "height", 0, "height, if 0 or empty it takes the full screen")
 	flag.IntVar(&width, "width", 0, "width, if 0 or empty it takes the full screen")
 	flag.BoolVar(&onekey, "onekey", false, "exit after 1 keystroke. useful in confirm mode")
+	flag.StringVar(&defaultValue, "default", "", "default query value")
 	flag.Parse()
 
 	lipgloss.SetColorProfile(termenv.TrueColor)
