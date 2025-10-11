@@ -133,6 +133,12 @@ func (m model) updateMenu(msg tea.Msg) (model, tea.Cmd) {
 	case tea.KeyMsg:
 		keyStroke := msg.String()
 		for _, key := range m.menuKeys {
+			// special case
+			if key.action == "Space" && keyStroke == " " {
+				response = key.text
+				return m, tea.Quit
+			}
+
 			if key.action == keyStroke {
 				response = key.text
 				return m, tea.Quit
