@@ -5,6 +5,7 @@ import "github.com/charmbracelet/lipgloss"
 type theme struct {
 	title            lipgloss.Style
 	bg               lipgloss.Style
+	menuKey          lipgloss.Style
 	prompt           lipgloss.Style
 	promptCursor     lipgloss.Style
 	placeholder      lipgloss.Style
@@ -49,8 +50,13 @@ func getTheme() theme {
 		Background(lipgloss.Color("#c4746e")).
 		Padding(0, 1)
 
+	mk := lipgloss.NewStyle().
+		Background(lipgloss.Color("#282727")).
+		Foreground(lipgloss.Color("#c4746e"))
+
 	return theme{
 		bg:               p,
+		menuKey:          mk,
 		prompt:           p,
 		promptCursor:     pC,
 		noCursor:         hidden,

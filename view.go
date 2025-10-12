@@ -72,7 +72,7 @@ func (m model) menuView() string {
 	items := []MappedKey{}
 	for line, key := range m.menuKeys {
 		keyStr := m.theme.bg.Render(fmt.Sprintf(" %s", line))
-		actionStr := m.theme.bg.Render(fmt.Sprintf("(%s) ", key.action))
+		actionStr := m.theme.menuKey.Render(fmt.Sprintf("[%s] ", key.action))
 		keyPadded := lipgloss.PlaceHorizontal(m.width-lipgloss.Width(actionStr), lipgloss.Left, keyStr, lipgloss.WithWhitespaceBackground(bg))
 
 		item := lipgloss.JoinHorizontal(lipgloss.Left, keyPadded, actionStr)
