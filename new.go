@@ -25,17 +25,7 @@ func newFzfModel() model {
 		items = append(items, item{text: line, style: theme.listItem, selectedStyle: theme.selectedListItem})
 	}
 
-	l := list.New(items, itemDelegate{}, 0, 0)
-	l.SetFilteringEnabled(false)
-	l.SetShowFilter(false)
-	l.SetShowHelp(false)
-	l.SetShowPagination(false)
-	l.SetShowStatusBar(false)
-	l.SetShowTitle(false)
-	l.KeyMap.CursorDown = key.NewBinding(key.WithKeys("ctrl+n"))
-	l.KeyMap.CursorUp = key.NewBinding(key.WithKeys("ctrl+p"))
-	l.SetHeight(height)
-	l.SetWidth(width - theme.listItem.GetPaddingLeft() - theme.listItem.GetPaddingRight())
+	l := newList(theme, items)
 
 	ignoreH := height != 0
 	ignoreW := width != 0
@@ -141,4 +131,21 @@ func newInput(theme theme) textinput.Model {
 	}
 
 	return t
+}
+
+func newList(theme theme, items []list.Item) list.Model {
+	l := list.New(items, itemDelegate{}, 0, 0)
+	l.SetFilteringEnabled(false)
+	l.SetShowFilter(false)
+	l.SetShowHelp(false)
+	l.SetShowPagination(false)
+	l.SetShowStatusBar(false)
+	l.SetShowTitle(false)
+	l.KeyMap.Quit = key.Binding{}
+	l.KeyMap.CursorDown = key.NewBinding(key.WithKeys("ctrl+n"))
+	l.KeyMap.CursorUp = key.NewBinding(key.WithKeys("ctrl+p"))
+	l.SetHeight(height)
+	l.SetWidth(width - theme.listItem.GetPaddingLeft() - theme.listItem.GetPaddingRight())
+
+	return l
 }

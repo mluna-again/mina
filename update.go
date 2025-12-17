@@ -1,6 +1,8 @@
 package main
 
-import tea "github.com/charmbracelet/bubbletea"
+import (
+	tea "github.com/charmbracelet/bubbletea"
+)
 
 func (m model) updatePrompt(msg tea.Msg) (model, tea.Cmd) {
 	var cmds []tea.Cmd
@@ -26,7 +28,7 @@ func (m model) updatePrompt(msg tea.Msg) (model, tea.Cmd) {
 			response = m.tinput.Value()
 			return m, tea.Quit
 
-		case "ctrl+c", "q":
+		case "ctrl+c", "esc":
 			return m, tea.Quit
 		}
 	}
@@ -73,7 +75,7 @@ func (m model) updateFzf(msg tea.Msg) (model, tea.Cmd) {
 			}
 			return m, tea.Quit
 
-		case "ctrl+c", "q":
+		case "ctrl+c", "esc":
 			return m, tea.Quit
 		}
 	}
@@ -105,7 +107,7 @@ func (m model) updateConfirm(msg tea.Msg) (model, tea.Cmd) {
 			response = m.tinput.Value()
 			return m, tea.Quit
 
-		case "ctrl+c", "q":
+		case "ctrl+c", "q", "esc":
 			return m, tea.Quit
 		}
 
@@ -146,7 +148,7 @@ func (m model) updateMenu(msg tea.Msg) (model, tea.Cmd) {
 		}
 
 		switch keyStroke {
-		case "ctrl+c", "q":
+		case "ctrl+c", "esc":
 			return m, tea.Quit
 		}
 	}
