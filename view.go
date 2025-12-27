@@ -9,7 +9,14 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-func (m model) headerView() string {
+func (m model) fzfView() string {
+	list := m.theme.list.Render(m.list.View())
+	list = lipgloss.Place(m.list.Width(), m.list.Height(), lipgloss.Center, lipgloss.Center, list, lipgloss.WithWhitespaceBackground(m.theme.list.GetBackground()))
+
+	return m.promptView() + "\n" + list
+}
+
+func (m model) promptView() string {
 	bg := m.tinput.TextStyle.GetBackground()
 	title := m.theme.title.Render(fmt.Sprintf(" %s ", m.title))
 	title = lipgloss.PlaceHorizontal(m.width, lipgloss.Center, title, lipgloss.WithWhitespaceBackground(bg))
@@ -20,13 +27,6 @@ func (m model) headerView() string {
 	fill := lipgloss.PlaceHorizontal(m.width, lipgloss.Center, "", lipgloss.WithWhitespaceBackground(bg))
 
 	return lipgloss.JoinVertical(lipgloss.Top, title, input, fill)
-}
-
-func (m model) listView() string {
-	list := m.theme.list.Render(m.list.View())
-	list = lipgloss.Place(m.list.Width(), m.list.Height(), lipgloss.Center, lipgloss.Center, list, lipgloss.WithWhitespaceBackground(m.theme.list.GetBackground()))
-
-	return list
 }
 
 func (m model) confirmView() string {

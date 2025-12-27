@@ -92,13 +92,15 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (m model) View() string {
 	switch m.mode {
 	case PROMPT_MODE:
-		return m.headerView()
+		return m.promptView()
 	case CONFIRM_MODE:
 		return m.confirmView()
 	case MENU_MODE:
 		return m.menuView()
+	case FZF_MODE:
+		return m.fzfView()
 	default:
-		return m.headerView() + "\n" + m.listView()
+		panic("unknown mode")
 	}
 }
 
