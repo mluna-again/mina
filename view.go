@@ -42,7 +42,7 @@ func (m model) confirmView() string {
 
 	input := m.tinput.Value()
 	if input == "" {
-		input = m.theme.placeholder.Render("N/y")
+		input = m.theme.placeholder.Render(ghostText)
 	} else if (utf8.RuneCount([]byte(input))) == 1 {
 		input = m.theme.prompt.Render(fmt.Sprintf(" %s ", input))
 	} else if (utf8.RuneCount([]byte(input))) == 2 {
