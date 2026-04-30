@@ -117,9 +117,9 @@ func newInput(theme theme) textinput.Model {
 	t.Cursor.TextStyle = theme.promptCursor
 	t.Width = width - lipgloss.Width(t.Prompt) - 1
 	if mode != CONFIRM_MODE {
-		t.Prompt = fmt.Sprintf("%s ", icon)
+		t.Prompt = fmt.Sprintf("%s", icon)
 	} else {
-		t.Prompt = " "
+		t.Prompt = ""
 		t.Cursor.Style = theme.noCursor
 		t.Cursor.TextStyle = theme.noCursor
 		t.CharLimit = 3
