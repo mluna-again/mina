@@ -30,6 +30,7 @@ var width int
 var onekey bool
 var defaultValue string
 var ghostText string
+var hideBanner bool
 
 type Key struct {
 	action string
@@ -116,6 +117,7 @@ func main() {
 	flag.BoolVar(&onekey, "onekey", false, "exit after 1 keystroke. useful in confirm mode")
 	flag.StringVar(&defaultValue, "default", "", "default query value")
 	flag.StringVar(&ghostText, "ghost", "[N/y]", "ghost text to display on input. curretly used in confirm mode only.")
+	flag.BoolVar(&hideBanner, "nobanner", false, "hide prompt banner (single line prompt)")
 	flag.Parse()
 
 	lipgloss.SetColorProfile(termenv.TrueColor)

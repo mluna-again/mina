@@ -18,11 +18,14 @@ func (m model) fzfView() string {
 
 func (m model) promptView() string {
 	bg := m.tinput.TextStyle.GetBackground()
-	title := m.theme.title.Render(fmt.Sprintf(" %s ", m.title))
-	title = lipgloss.PlaceHorizontal(m.width, lipgloss.Center, title, lipgloss.WithWhitespaceBackground(bg))
-
 	input := m.tinput.View()
 	input = lipgloss.PlaceHorizontal(m.width, lipgloss.Center, input, lipgloss.WithWhitespaceBackground(bg))
+	if hideBanner {
+		return input
+	}
+
+	title := m.theme.title.Render(fmt.Sprintf(" %s ", m.title))
+	title = lipgloss.PlaceHorizontal(m.width, lipgloss.Center, title, lipgloss.WithWhitespaceBackground(bg))
 
 	fill := lipgloss.PlaceHorizontal(m.width, lipgloss.Center, "", lipgloss.WithWhitespaceBackground(bg))
 
