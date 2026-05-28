@@ -50,7 +50,11 @@ func (m model) updateFzf(msg tea.Msg) (model, tea.Cmd) {
 	case tea.WindowSizeMsg:
 		if !m.ignoreHeight {
 			m.height = msg.Height
-			m.list.SetHeight(m.height - 3) // header
+			h := 3
+			if hideBanner {
+				h = 1
+			}
+			m.list.SetHeight(m.height - h) // header
 		}
 		if !m.ignoreWidth {
 			m.width = msg.Width
