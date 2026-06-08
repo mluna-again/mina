@@ -17,42 +17,42 @@ type theme struct {
 
 // Kanagawa Dragon
 func getTheme() theme {
-	hidden := lipgloss.NewStyle().Background(lipgloss.Color("#282727")).Foreground(lipgloss.Color("#282727"))
+	hidden := lipgloss.NewStyle().Background(lipgloss.Color("0")).Foreground(lipgloss.Color("0"))
 
 	p := lipgloss.NewStyle().
-		Background(lipgloss.Color("#282727")).
-		Foreground(lipgloss.Color("#c5c9c5"))
+		Background(lipgloss.Color("0")).
+		Foreground(lipgloss.Color("15"))
 
 	ph := lipgloss.NewStyle().
-		Background(lipgloss.Color("#282727")).
-		Foreground(lipgloss.Color("#a6a69c"))
+		Background(lipgloss.Color("0")).
+		Foreground(lipgloss.Color("5"))
 
 	pC := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("#c5c9c5")).
-		Background(lipgloss.Color("#c5c9c5"))
+		Foreground(lipgloss.Color("15")).
+		Background(lipgloss.Color("15"))
 
 	t := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("#181616")).
-		Background(lipgloss.Color("#c4b28a"))
+		Foreground(lipgloss.Color("0")).
+		Background(lipgloss.Color("3"))
 
 	l := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("#c5c9c5")).
-		Background(lipgloss.Color("#12120f")).
+		Foreground(lipgloss.Color("15")).
+		Background(lipgloss.Color("0")).
 		Padding(0, 0)
 
 	li := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("#c5c9c5")).
-		Background(lipgloss.Color("#12120f")).
+		Foreground(lipgloss.Color("15")).
+		Background(lipgloss.Color("233")).
 		Padding(0, 1)
 
 	sli := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("#12120f")).
-		Background(lipgloss.Color("#c4b28a")).
+		Foreground(lipgloss.Color("0")).
+		Background(lipgloss.Color("3")).
 		Padding(0, 1)
 
 	mk := lipgloss.NewStyle().
-		Background(lipgloss.Color("#282727")).
-		Foreground(lipgloss.Color("#c4746e"))
+		Background(lipgloss.Color("0")).
+		Foreground(lipgloss.Color("1"))
 
 	return theme{
 		bg:               p,
