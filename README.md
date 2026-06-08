@@ -4,6 +4,11 @@ have you ever wished for a slower and with 0.1% of the functionality, alternativ
 
 i have.
 
+## Installation
+```sh
+$ go install github.com/mluna-again/mina@latest
+```
+
 ## Usage
 ```sh
 $ mina -help
