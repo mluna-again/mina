@@ -108,6 +108,7 @@ func newMenuModel() model {
 func newInput(theme theme) textinput.Model {
 	t := textinput.New()
 	t.Focus()
+	t.KeyMap.DeleteWordBackward = key.NewBinding(key.WithKeys("ctrl+w"))
 	t.TextStyle = theme.prompt
 	t.PromptStyle = theme.prompt
 	t.PlaceholderStyle = theme.placeholder
