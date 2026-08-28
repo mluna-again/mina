@@ -4,7 +4,6 @@ import (
 	"os"
 	"unicode"
 
-	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 )
@@ -25,12 +24,9 @@ func (m model) updatePrompt(msg tea.Msg) (model, tea.Cmd) {
 		return m, tea.ClearScreen
 
 	case tea.KeyMsg:
-		if key.Matches(msg, m.tinput.KeyMap.DeleteWordBackward) {
-			m.deleteBackwards()
-			return m, nil
-		}
-
 		switch msg.String() {
+		case "ctrl+w":
+			m.deleteBackwards()
 		case "enter":
 			response = m.tinput.Value()
 			return m, tea.Quit
@@ -71,10 +67,6 @@ func (m model) updateFzf(msg tea.Msg) (model, tea.Cmd) {
 		return m, tea.ClearScreen
 
 	case tea.KeyMsg:
-		if key.Matches(msg, m.tinput.KeyMap.DeleteWordBackward) {
-			m.deleteBackwards()
-			return m, nil
-		}
 		// man this makes my brain hurt
 		// why do i need this? i *THINK* its because if i set the filter on each keystroke
 		// it resets the list position to 0. so if the keys are ctrl+n or ctrl+p i dont update the
@@ -84,6 +76,8 @@ func (m model) updateFzf(msg tea.Msg) (model, tea.Cmd) {
 			m.list.SetFilterText(m.tinput.Value())
 		}
 		switch msg.String() {
+		case "ctrl+w":
+			m.deleteBackwards()
 		case "enter":
 			if len(m.list.VisibleItems()) > 0 {
 				response = m.content[m.list.GlobalIndex()]
@@ -188,11 +182,11 @@ func (m *model) deleteBackwards() {
 	oldPos := m.tinput.Position()
 
 	m.tinput.SetCursor(m.tinput.Position() - 1)
-	for unicode.IsSpace(rune(m.tinput.Value()[m.tinput.Position()])) {
+	for unicode.IsSpace(rune(m.tinput.Value()[m.tinput.Position()])) || m.tinput.Value()[m.tinput.Position()] == os.PathSeparator {
 		if m.tinput.Position() <= 0 {
 			break
 		}
-		// ignore series of whitespace before cursor
+		// ignore series of whitespace (and path separators) before cursor
 		m.tinput.SetCursor(m.tinput.Position() - 1)
 	}
 
