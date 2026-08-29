@@ -78,6 +78,7 @@ func (m model) updateFzf(msg tea.Msg) (model, tea.Cmd) {
 		switch msg.String() {
 		case "ctrl+w":
 			m.deleteBackwards()
+			m.list.SetFilterText(m.tinput.Value())
 		case "enter":
 			if len(m.list.VisibleItems()) > 0 {
 				response = m.content[m.list.GlobalIndex()]
