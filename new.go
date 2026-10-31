@@ -145,6 +145,7 @@ func newList(theme theme, items []list.Item) list.Model {
 	l.KeyMap.Quit = key.Binding{}
 	l.KeyMap.CursorDown = key.NewBinding(key.WithKeys("ctrl+n"))
 	l.KeyMap.CursorUp = key.NewBinding(key.WithKeys("ctrl+p"))
+	l.InfiniteScrolling = true
 	l.SetHeight(height)
 	l.SetWidth(width - theme.listItem.GetPaddingLeft() - theme.listItem.GetPaddingRight())
 
