@@ -9,9 +9,9 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-func newFzfModel() model {
-	theme := getTheme()
-	t := newInput(theme)
+func newFzfModel(c LoadedConfig) model {
+	theme := c.theme
+	t := newInput(c)
 
 	content := []string{}
 	var err error
@@ -44,9 +44,9 @@ func newFzfModel() model {
 	}
 }
 
-func newPromptModel() model {
-	theme := getTheme()
-	t := newInput(theme)
+func newPromptModel(c LoadedConfig) model {
+	theme := c.theme
+	t := newInput(c)
 	ignoreH := height != 0
 	ignoreW := width != 0
 
@@ -62,9 +62,9 @@ func newPromptModel() model {
 	}
 }
 
-func newConfirmModel() model {
-	theme := getTheme()
-	t := newInput(theme)
+func newConfirmModel(c LoadedConfig) model {
+	theme := c.theme
+	t := newInput(c)
 	ignoreH := height != 0
 	ignoreW := width != 0
 
@@ -80,8 +80,8 @@ func newConfirmModel() model {
 	}
 }
 
-func newMenuModel() model {
-	theme := getTheme()
+func newMenuModel(c LoadedConfig) model {
+	theme := c.theme
 	ignoreH := height != 0
 	ignoreW := width != 0
 
@@ -105,7 +105,8 @@ func newMenuModel() model {
 	}
 }
 
-func newInput(theme theme) textinput.Model {
+func newInput(c LoadedConfig) textinput.Model {
+	theme := c.theme
 	t := textinput.New()
 	t.Focus()
 	t.KeyMap.DeleteWordBackward.SetEnabled(false)

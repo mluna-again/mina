@@ -1,8 +1,11 @@
 package main
 
-import "github.com/charmbracelet/lipgloss"
+import (
+	"github.com/charmbracelet/lipgloss"
+)
 
 type theme struct {
+	// TODO: fix these names (add fg/bg variants)
 	title            lipgloss.Style
 	bg               lipgloss.Style
 	menuKey          lipgloss.Style
@@ -15,8 +18,24 @@ type theme struct {
 	selectedListItem lipgloss.Style
 }
 
-// Kanagawa Dragon
-func getTheme() theme {
+func loadTheme(t ConfigTheme) theme {
+	theme := kanagawaDragon()
+	theme.title = lipgloss.NewStyle().
+		Background(theme.title.GetBackground()).
+		Foreground(theme.title.GetForeground())
+
+	if t.TitleBG != "" {
+		theme.title = theme.title.Background(lipgloss.Color(t.TitleBG))
+	}
+
+	if t.TitleFG != "" {
+		theme.title = theme.title.Foreground(lipgloss.Color(t.TitleFG))
+	}
+
+	return theme
+}
+
+func kanagawaDragon() theme {
 	hidden := lipgloss.NewStyle().Background(lipgloss.Color("0")).Foreground(lipgloss.Color("0"))
 
 	p := lipgloss.NewStyle().

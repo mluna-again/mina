@@ -57,16 +57,16 @@ type model struct {
 	menuKeys     map[string]Key
 }
 
-func newMina() model {
+func newMina(c LoadedConfig) model {
 	switch mode {
 	case FZF_MODE:
-		return newFzfModel()
+		return newFzfModel(c)
 	case PROMPT_MODE:
-		return newPromptModel()
+		return newPromptModel(c)
 	case CONFIRM_MODE:
-		return newConfirmModel()
+		return newConfirmModel(c)
 	case MENU_MODE:
-		return newMenuModel()
+		return newMenuModel(c)
 	default:
 		panic("unknown mode")
 	}
@@ -120,8 +120,14 @@ func main() {
 	flag.BoolVar(&hideBanner, "nobanner", false, "hide prompt banner (single line prompt)")
 	flag.Parse()
 
+	config, err := loadConfig()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err.Error())
+		os.Exit(1)
+	}
+
 	lipgloss.SetColorProfile(termenv.TrueColor)
-	p := tea.NewProgram(newMina(), tea.WithAltScreen(), tea.WithOutput(os.Stderr))
+	p := tea.NewProgram(newMina(config), tea.WithAltScreen(), tea.WithOutput(os.Stderr))
 	if _, err := p.Run(); err != nil {
 		fmt.Printf("Alas, there's been an error: %v", err)
 		os.Exit(1)
