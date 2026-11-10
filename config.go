@@ -30,12 +30,12 @@ type LoadedConfig struct {
 var defaultConfig = LoadedConfig{kanagawaDragon()}
 
 func loadConfig() (LoadedConfig, error) {
-	cfg, err := os.UserConfigDir()
+	cfg, err := os.UserHomeDir()
 	if err != nil {
 		return LoadedConfig{}, err
 	}
 
-	p := filepath.Join(cfg, "mina", "config.json")
+	p := filepath.Join(cfg, ".config", "mina", "config.json")
 	configFile, err := os.Open(p)
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
