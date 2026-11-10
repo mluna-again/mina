@@ -11,6 +11,12 @@ import (
 type ConfigTheme struct {
 	TitleBG string `json:"title_bg"`
 	TitleFG string `json:"title_fg"` // TODO: add the rest of styles
+
+	ListItemBG string `json:"list_item_bg"`
+	ListItemFG string `json:"list_item_fg"`
+
+	SelectedListItemBG string `json:"selected_list_item_bg"`
+	SelectedListItemFG string `json:"selected_list_item_fg"`
 }
 
 type Config struct {

@@ -20,9 +20,6 @@ type theme struct {
 
 func loadTheme(t ConfigTheme) theme {
 	theme := kanagawaDragon()
-	theme.title = lipgloss.NewStyle().
-		Background(theme.title.GetBackground()).
-		Foreground(theme.title.GetForeground())
 
 	if t.TitleBG != "" {
 		theme.title = theme.title.Background(lipgloss.Color(t.TitleBG))
@@ -30,6 +27,22 @@ func loadTheme(t ConfigTheme) theme {
 
 	if t.TitleFG != "" {
 		theme.title = theme.title.Foreground(lipgloss.Color(t.TitleFG))
+	}
+
+	if t.ListItemBG != "" {
+		theme.listItem = theme.listItem.Background(lipgloss.Color(t.ListItemBG))
+	}
+
+	if t.ListItemFG != "" {
+		theme.listItem = theme.listItem.Foreground(lipgloss.Color(t.ListItemFG))
+	}
+
+	if t.SelectedListItemBG != "" {
+		theme.selectedListItem = theme.selectedListItem.Background(lipgloss.Color(t.SelectedListItemBG))
+	}
+
+	if t.SelectedListItemFG != "" {
+		theme.selectedListItem = theme.selectedListItem.Foreground(lipgloss.Color(t.SelectedListItemFG))
 	}
 
 	return theme
